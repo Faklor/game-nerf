@@ -1,0 +1,153 @@
+.intro {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .backgroundImage {
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+
+    .logoContainer {
+      margin-top: 2rem;
+      img {
+        width: auto;
+        height: auto;
+      }
+    }
+
+    .weaponsShowcase {
+      width: 100%;
+      max-width: 1200px;
+      text-align: center;
+
+      .weaponsContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .weaponImage {
+          flex: 1;
+          max-width: 250px;
+          height: auto;
+
+          img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+          }
+        }
+      }
+
+      .weaponsTitle {
+        font-family: 'EurostileBold', sans-serif;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 1rem 0;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .buttonGroup {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 2rem;
+
+      .button {
+        font-family: 'EurostileBold', sans-serif;
+        font-size: 1.2rem;
+        padding: 1rem;
+        border: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: transform 0.2s ease;
+      }
+
+      .playButton {
+        background-color: #FF6B00;
+        color: white;
+      }
+
+      .watchButton, .rangeButton, .visitButton {
+        background-color: #00E5FF;
+        color: #1A1A1A;
+      }
+    }
+  }
+
+  .videoModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .videoContainer {
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      aspect-ratio: 16/9;
+      background: black;
+      border-radius: 8px;
+      overflow: hidden;
+
+      .video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .closeButton {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+  }
+
+  h1 {
+    font-family: 'EurostileBold', sans-serif;
+    font-size: 5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+  }
+}
