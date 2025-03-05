@@ -1,16 +1,36 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { weapons } from '@/constants/weapons';
 import styles from './carousel.module.scss';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function CarouselPage() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const baseUrl = process.env.NEXT_PUBLIC_BASEURL || '';
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false);
+
+  useEffect(() => {
+    const bgImage = new window.Image();
+    bgImage.src = `${baseUrl}/background/backCarousel.png`;
+    bgImage.onload = () => setBgLoaded(true);
+
+    // Предзагрузка изображений оружия
+    Promise.all(
+      weapons.map((weapon) => {
+        return new Promise((resolve) => {
+          const img = new window.Image();
+          img.src = `${baseUrl}${weapon.image}`;
+          img.onload = resolve;
+        });
+      })
+    ).then(() => setImagesLoaded(true));
+  }, []);
 
   const nextWeapon = () => {
     setCurrentIndex((prev) => (prev + 1) % weapons.length);
@@ -24,12 +44,16 @@ export default function CarouselPage() {
 
   return (
     <div className={styles.container}>
+      {(!bgLoaded || !imagesLoaded) && <LoadingSpinner />}
+      
       <Image
         src={`${baseUrl}/background/backCarousel.png`}
         alt="Background"
         fill
         className={styles.backgroundImage}
         priority
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkLzYvLy0vLzY5PTowOT1NOkE6Njk9RUpFSkhKPUxNWk1OSkr/2wBDAR"
       />
       
       <div className={styles.header}>
