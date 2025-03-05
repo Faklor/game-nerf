@@ -164,6 +164,90 @@
   color: white;
 }
 
+.weaponInfo {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 0 0 8px 8px;
+  width: 100%;
+}
+
+.weaponName {
+  color: #FF6B00;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: 'EurostileBold', sans-serif;
+  text-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+}
+
+.weaponStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statLabel {
+  color: #FFF;
+  font-size: 0.9rem;
+  width: 60px;
+  font-family: 'EurostileBold', sans-serif;
+}
+
+.statBar {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #FF6B00;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.statProgress {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B00 0%, #FFA500 100%);
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+  transition: width 0.3s ease;
+}
+
+.weaponCard {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: scale(1.02);
+    border-color: #FF6B00;
+    
+    .weaponName {
+      text-shadow: 0 0 15px rgba(255, 107, 0, 0.8);
+    }
+    
+    .statProgress {
+      box-shadow: 0 0 15px rgba(255, 107, 0, 0.8);
+    }
+  }
+
+  &.selected {
+    border-color: #FF6B00;
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+    
+    .weaponName {
+      text-shadow: 0 0 15px rgba(255, 107, 0, 0.8);
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .content {
     padding: 1rem;
@@ -197,6 +281,32 @@
     //background: rgba(0, 15, 30, 0.7);
     
   }
+
+  .weaponInfo {
+    padding: 0.75rem;
+  }
+
+  .weaponName {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .weaponStats {
+    gap: 0.35rem;
+  }
+
+  .statRow {
+    gap: 0.5rem;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+    width: 50px;
+  }
+
+  .statBar {
+    height: 4px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -211,6 +321,8 @@
 
   .weaponContainer {
     padding: 1rem;
+    display: grid;
+    gap: 1rem;
   }
 
   .weaponImage {
@@ -241,5 +353,27 @@
     width: 35px;
     height: 35px;
     
+  }
+
+  .weaponInfo {
+    padding: 0.5rem;
+  }
+
+  .weaponName {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .weaponStats {
+    gap: 0.25rem;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
+    width: 45px;
+  }
+
+  .statBar {
+    height: 3px;
   }
 }

@@ -15,7 +15,7 @@ export const weapons: Weapon[] = [
     image: "/weapons/NERF_Elite20_Volt.png",
     power: 75,
     hitRadius: 30,
-    reloadTime: 400,
+    reloadTime: 800,
     description: "ELITE 2.0 VOLT IS EQUIPPED WITH 2 TACTICAL RAILS AND LIGHT BEAM TARGETING, REACHING UP TO 15 FEET. INCLUDES 6 OFFICIAL NERF DARTS AND FIRES DARTS UP TO 90 FEET."
   },
   {
@@ -33,7 +33,7 @@ export const weapons: Weapon[] = [
     image: "/weapons/NERF_Elite20_Auto.png",
     power: 90,
     hitRadius: 45,
-    reloadTime: 800,
+    reloadTime: 200,
     description: "ELITE 2.0 ECHO HAS REMOVABLE STOCK AND BARREL, WITH 4 CONFIGURATIONS IN ONE. FIRE 1 DART AT A TIME OR 10 DARTS RAPIDLY. COMES WITH 24 NERF ELITE DARTS."
   },
   {
@@ -42,7 +42,7 @@ export const weapons: Weapon[] = [
     image: "/weapons/NERF_Elite20_Shockwave.png",
     power: 95,
     hitRadius: 50,
-    reloadTime: 1000,
+    reloadTime: 500,
     description: "ELITE 2.0 SHOCKWAVE COMES WITH 30 OFFICIAL NERF DARTS TO FULLY LOAD THE 15-DART ROTATING DRUM. UNLEASH 1 DART, OR SLAM-FIRE ALL 15 DARTS AT ONCE. FIRES UP TO 90 FEET."
   }
 ];

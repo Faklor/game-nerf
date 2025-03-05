@@ -85,6 +85,38 @@ export default function WeaponSelectPage() {
                 className={styles.weaponImage}
               />
             </div>
+            <div className={styles.weaponInfo}>
+              <h3 className={styles.weaponName}>{currentWeapon.name}</h3>
+              <div className={styles.weaponStats}>
+                <div className={styles.statRow}>
+                  <span className={styles.statLabel}>POWER</span>
+                  <div className={styles.statBar}>
+                    <div 
+                      className={styles.statProgress}
+                      style={{ width: `${currentWeapon.power}%` }}
+                    />
+                  </div>
+                </div>
+                <div className={styles.statRow}>
+                  <span className={styles.statLabel}>RADIUS</span>
+                  <div className={styles.statBar}>
+                    <div 
+                      className={styles.statProgress}
+                      style={{ width: `${(currentWeapon.hitRadius / 50) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <div className={styles.statRow}>
+                  <span className={styles.statLabel}>RELOAD</span>
+                  <div className={styles.statBar}>
+                    <div 
+                      className={styles.statProgress}
+                      style={{ width: `${100 - ((currentWeapon.reloadTime / 1000) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           <button onClick={handleNextWeapon} className={styles.navButton}>
