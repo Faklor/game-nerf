@@ -27,6 +27,10 @@ function GameContent() {
   const [gameStarted, setGameStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(20); 
   const [isGameOver, setIsGameOver] = useState(false);
+  const [canShoot, setCanShoot] = useState(true);
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const [reloadProgress, setReloadProgress] = useState(100);
+  const reloadAnimationRef = useRef<any>(null);
   
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const baseUrl = process.env.NEXT_PUBLIC_BASEURL || '';
@@ -83,15 +87,67 @@ function GameContent() {
     setTargets(prev => [...prev, newTarget]);
   };
 
-  const handleTargetClick = (targetId: number) => {
-    if (!gameStarted) return;
+  // Обработка выстрела с учетом радиуса поражения
+  const handleTargetClick = (e: React.MouseEvent, targetId: number) => {
+    if (!gameStarted || !canShoot) return;
 
-    const clickedTarget = targets.find(t => t.id === targetId);
-    if (clickedTarget && !clickedTarget.isHit) {
-      setScore(prev => prev + clickedTarget.points);
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+    
+    // Начинаем перезарядку
+    setCanShoot(false);
+    setCursorVisible(false);
+    setReloadProgress(0);
+    
+    // Очищаем предыдущую анимацию, если она есть
+    if (reloadAnimationRef.current) {
+      cancelAnimationFrame(reloadAnimationRef.current);
+    }
+    
+    // Анимация прогресс-бара
+    let startTime: number | null = null;
+    const reloadTime = weapon?.reloadTime || 500;
+    
+    const updateProgress = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min((elapsed / reloadTime) * 100, 100);
+      
+      setReloadProgress(progress);
+      
+      if (progress < 100) {
+        reloadAnimationRef.current = requestAnimationFrame(updateProgress);
+      } else {
+        setCanShoot(true);
+        setCursorVisible(true);
+      }
+    };
+    
+    reloadAnimationRef.current = requestAnimationFrame(updateProgress);
+
+    const hitTargets = targets.filter(target => {
+      if (target.isHit) return false;
+      
+      const targetElement = document.getElementById(`target-${target.id}`);
+      if (!targetElement) return false;
+
+      const rect = targetElement.getBoundingClientRect();
+      const targetCenterX = rect.left + rect.width / 2;
+      const targetCenterY = rect.top + rect.height / 2;
+
+      const distance = Math.sqrt(
+        Math.pow(clickX - targetCenterX, 2) + 
+        Math.pow(clickY - targetCenterY, 2)
+      );
+
+      return distance <= (weapon?.hitRadius || 30);
+    });
+
+    if (hitTargets.length > 0) {
+      setScore(prev => prev + hitTargets.reduce((sum, target) => sum + target.points, 0));
       setTargets(prev => 
         prev.map(target => 
-          target.id === targetId 
+          hitTargets.some(hit => hit.id === target.id)
             ? { ...target, isHit: true }
             : target
         )
@@ -99,14 +155,14 @@ function GameContent() {
     }
   };
 
-  const startGame = () => {
-    setGameStarted(true);
-    setScore(0);
-    setTimeLeft(20);
-    setTargets([]);
-    setIsGameOver(false);
-    setTimeout(createTarget, 500);
-  };
+  // Очистка анимации при размонтировании
+  useEffect(() => {
+    return () => {
+      if (reloadAnimationRef.current) {
+        cancelAnimationFrame(reloadAnimationRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!gameStarted || isGameOver) return;
@@ -145,6 +201,19 @@ function GameContent() {
     return () => clearInterval(interval);
   }, [gameStarted, isGameOver]);
 
+  useEffect(() => {
+    setReloadProgress(100);
+  }, []);
+
+  const startGame = () => {
+    setGameStarted(true);
+    setScore(0);
+    setTimeLeft(20);
+    setTargets([]);
+    setIsGameOver(false);
+    setTimeout(createTarget, 500);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.background}>
@@ -160,7 +229,26 @@ function GameContent() {
       <div className={styles.gameInterface}>
         {!isGameOver && (
           <div className={styles.header}>
-            <div className={styles.score}>SCORE: {score}</div>
+            <div className={styles.weaponInfo}>
+              <div className={styles.weaponImage}>
+                <Image
+                  src={`${baseUrl}${weapon?.image}`}
+                  alt={weapon?.name || "Weapon"}
+                  width={100}
+                  height={50}
+                  priority
+                />
+              </div>
+              <div className={styles.weaponStats}>
+                <div className={styles.score}>SCORE: {score}</div>
+                <div className={styles.reloadBar}>
+                  <div 
+                    className={styles.reloadProgress} 
+                    style={{ width: `${reloadProgress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
             <div className={styles.timer}>TIME: {timeLeft}s</div>
           </div>
         )}
@@ -168,13 +256,14 @@ function GameContent() {
         {!isGameOver && (
           <div 
             ref={gameAreaRef} 
-            className={styles.gameArea}
+            className={`${styles.gameArea} ${!cursorVisible ? styles.reloading : ''}`}
           >
             <AnimatePresence>
               {targets.map(target => (
                 <motion.div
                   key={target.id}
-                  className={styles.target}
+                  id={`target-${target.id}`}
+                  className={`${styles.target} ${!cursorVisible ? styles.noCursor : ''}`}
                   style={{
                     left: target.x,
                     top: target.y,
@@ -182,7 +271,7 @@ function GameContent() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  onClick={() => handleTargetClick(target.id)}
+                  onClick={(e) => handleTargetClick(e, target.id)}
                 >
                   <Image
                     src={`${baseUrl}/points/${target.points}.png`}
@@ -190,6 +279,7 @@ function GameContent() {
                     width={80}
                     height={80}
                     priority
+                    className={styles.targetImage}
                   />
                 </motion.div>
               ))}

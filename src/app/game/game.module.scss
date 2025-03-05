@@ -47,11 +47,66 @@
   padding: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 24px;
   color: #00E5FF;
   text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
   font-weight: bold;
   z-index: 3;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.weaponInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weaponImage {
+  width: 100px;
+  height: 50px;
+  position: relative;
+  
+  img {
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.3));
+  }
+}
+
+.weaponStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.score {
+  font-size: 1.5rem;
+  color: #00E5FF;
+}
+
+.reloadBar {
+  width: 200px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #FF6B00;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.reloadProgress {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B00 0%, #FFA500 100%);
+  box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: none;
+}
+
+.timer {
+  font-size: 1.5rem;
 }
 
 .gameArea {
@@ -60,20 +115,54 @@
   width: 100%;
   height: calc(100vh - 80px);
   cursor: crosshair;
+
+  &.reloading {
+    cursor: none;
+    
+    &::after {
+      content: 'RELOADING...';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00E5FF;
+      font-family: 'EurostileBold', sans-serif;
+      font-size: 2rem;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+      pointer-events: none;
+      animation: pulse 0.5s infinite alternate;
+    }
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .target {
   position: absolute;
   width: 80px;
   height: 80px;
-  cursor: pointer;
+  cursor: crosshair;
   transition: transform 0.2s;
   z-index: 2;
 
-  img {
+  &.noCursor {
+    cursor: none;
+  }
+
+  .targetImage {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    pointer-events: none; 
   }
 
   &:hover {
@@ -293,4 +382,30 @@
   color: #00E5FF;
   font-size: 24px;
   z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .weaponInfo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .weaponImage {
+    width: 80px;
+    height: 40px;
+  }
+
+  .reloadBar {
+    width: 150px;
+  }
+
+  .timer {
+    font-size: 1.2rem;
+  }
 }
