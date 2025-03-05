@@ -113,7 +113,7 @@ export default function WeaponSelectPage() {
 
           <button
             className={styles.playButton}
-            onClick={() => router.push('/carousel')}
+            onClick={() => router.push(`/game?weapon=${currentWeapon.id}`)}
           >
             PLAY GAME
           </button>
