@@ -1,0 +1,241 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+
+  .backgroundImage {
+    object-fit: cover;
+  }
+}
+
+.gameInterface {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  color: #00E5FF;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  font-weight: bold;
+  z-index: 3;
+}
+
+.gameArea {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px);
+  cursor: crosshair;
+}
+
+.target {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.targetHit {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.startScreen,
+.gameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #00E5FF;
+  }
+
+  h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.button,
+.startButton {
+  padding: 15px 30px;
+  font-size: 24px;
+  border: none;
+  border-radius: 10px;
+  background: #FF6B00;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.startButton {
+  background: #00E5FF;
+  color: black;
+  font-size: 32px;
+  padding: 20px 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  
+  &:hover {
+    background: #33EEFF;
+  }
+}
+
+.gameOverScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: white;
+  z-index: 10;
+}
+
+.gameOverTitle {
+  font-size: 48px;
+  color: #00E5FF;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.gameOverContent {
+  display: flex;
+  width: 100%;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.weaponScoreSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  .weaponImage {
+    width: 300px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
+  }
+}
+
+.scoreDisplay {
+  text-align: center;
+
+  .scoreLabel {
+    font-size: 24px;
+    color: #00E5FF;
+    margin-bottom: 10px;
+  }
+
+  .scoreValue {
+    font-size: 96px;
+    color: #00E5FF;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  }
+}
+
+.videoSection {
+  flex: 2;
+  aspect-ratio: 16/9;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #00E5FF;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.gameOverButtons {
+  display: flex;
+  gap: 20px;
+  margin-top: auto;
+
+  button {
+    padding: 15px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-weight: bold;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.goBackButton {
+  background: #00E5FF;
+  color: black;
+}
+
+.visitNerfButton {
+  background: #FF6B00;
+  color: white;
+}

@@ -1,84 +1,192 @@
-.weaponSelect {
-    min-height: 100vh;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  
-    h1 {
-      font-family: 'EurostileBold', sans-serif;
-      color: var(--primary-color);
-      text-align: center;
-    }
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
+  .backgroundImage {
+    object-fit: cover;
   }
-  
-  .weaponsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  .weaponCard {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1.5rem;
-    cursor: pointer;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.title {
+  font-family: 'EurostileBold', sans-serif;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.weaponShowcase {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex: 1;
+}
+
+.weaponDisplay {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.weaponStage {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  .effectsContainer {
     position: relative;
-    overflow: hidden;
-  
-    &.selected {
-      border: 2px solid var(--primary-color);
-      background: rgba(255, 107, 0, 0.1);
-    }
-  
-    .weaponImage {
-      width: 100%;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-  
-      img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-      }
-    }
-  
-    h3 {
-      font-family: 'EurostileBold', sans-serif;
-      margin-bottom: 0.5rem;
-    }
-  
-    p {
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      color: rgba(255, 255, 255, 0.8);
-    }
-  }
-  
-  .powerBar {
     width: 100%;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-  
-    .powerFill {
-      height: 100%;
-      background: var(--primary-color);
-      transition: width 0.3s ease;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pedestal {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .rays {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    filter: url(#glow);
+    opacity: 0.7;
+
+    .raysGroup {
+      transform-origin: center;
+      animation: rotateRays 20s linear infinite;
     }
   }
-  
-  .startButton {
-    &.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      pointer-events: none;
+
+  .weaponContainer {
+    position: absolute;
+    z-index: 2;
+    
+    .weaponImage {
+      width: auto;
+      height: auto;
+      max-width: 400px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
     }
   }
+}
+
+.weaponName {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'EurostileBold', sans-serif;
+  color: #00E5FF;
+  font-size: 2rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  z-index: 3;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: #00E5FF;
+  font-size: 4rem;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  z-index: 4;
+
+  &:hover {
+    color: white;
+  }
+
+  &.prevButton {
+    margin-right: 2rem;
+  }
+
+  &.nextButton {
+    margin-left: 2rem;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  z-index: 4;
+}
+
+.button {
+  font-family: 'EurostileBold', sans-serif;
+  font-size: 1.2rem;
+  padding: 1rem 3rem;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.backButton {
+  background-color: #00E5FF;
+  color: #1A1A1A;
+}
+
+.playButton {
+  background-color: #FF6B00;
+  color: white;
+}
+
+@keyframes rotateRays {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
