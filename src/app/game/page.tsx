@@ -39,17 +39,43 @@ function GameContent() {
     return Math.max(300, 1000 * (timeLeft / 20));
   };
 
+  const getPointsProbability = (points: number): number => {
+    const probabilities = {
+      10: 0.4,  
+      20: 0.3,  
+      50: 0.2,  
+      100: 0.1  
+    };
+    return probabilities[points as keyof typeof probabilities];
+  };
+
   const createTarget = () => {
     if (!gameAreaRef.current) return;
     
     const { width, height } = gameAreaRef.current.getBoundingClientRect();
     const points = [10, 20, 50, 100] as const;
     
+    const random = Math.random();
+    let selectedPoints: number = 10;
+    let cumulative = 0;
+
+    for (const point of points) {
+      cumulative += getPointsProbability(point);
+      if (random <= cumulative) {
+        selectedPoints = point;
+        break;
+      }
+    }
+    
+    const margin = 60;
+    const x = margin + Math.random() * (width - 2 * margin);
+    const y = margin + Math.random() * (height - 2 * margin);
+    
     const newTarget: Target = {
       id: Date.now(),
-      x: Math.random() * (width - 100),
-      y: Math.random() * (height - 100),
-      points: points[Math.floor(Math.random() * points.length)],
+      x,
+      y,
+      points: selectedPoints as 10 | 20 | 50 | 100,
       isHit: false,
       createdAt: Date.now()
     };
@@ -60,17 +86,16 @@ function GameContent() {
   const handleTargetClick = (targetId: number) => {
     if (!gameStarted) return;
 
-    setTargets(prev => 
-      prev.map(target => 
-        target.id === targetId 
-          ? { ...target, isHit: true }
-          : target
-      )
-    );
-
     const clickedTarget = targets.find(t => t.id === targetId);
     if (clickedTarget && !clickedTarget.isHit) {
       setScore(prev => prev + clickedTarget.points);
+      setTargets(prev => 
+        prev.map(target => 
+          target.id === targetId 
+            ? { ...target, isHit: true }
+            : target
+        )
+      );
     }
   };
 
@@ -80,13 +105,13 @@ function GameContent() {
     setTimeLeft(20);
     setTargets([]);
     setIsGameOver(false);
+    setTimeout(createTarget, 500);
   };
 
   useEffect(() => {
     if (!gameStarted || isGameOver) return;
 
     const interval = setInterval(createTarget, getTargetInterval());
-
     return () => clearInterval(interval);
   }, [gameStarted, isGameOver, timeLeft]);
 
@@ -243,7 +268,6 @@ function GameContent() {
   );
 }
 
-// Основной компонент страницы
 export default function GamePage() {
   return (
     <Suspense fallback={
