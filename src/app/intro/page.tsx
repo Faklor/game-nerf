@@ -10,7 +10,7 @@ import styles from './intro.module.scss';
 export default function IntroPage() {
   const router = useRouter();
   const [showVideo, setShowVideo] = useState(false);
-  const baseUrl = process.env.BASE_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_BASEURL || '';
 
   return (
     <div className={styles.intro}>

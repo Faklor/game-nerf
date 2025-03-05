@@ -76,7 +76,7 @@ const RaysEffect = () => {
 export default function WeaponSelectPage() {
   const router = useRouter();
   const [currentWeaponIndex, setCurrentWeaponIndex] = useState(0);
-  const baseUrl = process.env.BASE_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_BASEURL || '';
 
   const handlePrevWeapon = () => {
     setCurrentWeaponIndex((prev) => (prev === 0 ? weapons.length - 1 : prev - 1));

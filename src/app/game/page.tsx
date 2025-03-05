@@ -29,7 +29,7 @@ function GameContent() {
   const [isGameOver, setIsGameOver] = useState(false);
   
   const gameAreaRef = useRef<HTMLDivElement>(null);
-  const baseUrl = process.env.BASE_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_BASEURL || '';
 
   const getTargetLifetime = () => {
     return Math.max(1000, 2500 * (timeLeft / 20));
