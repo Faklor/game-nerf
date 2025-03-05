@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -16,7 +16,7 @@ type Target = {
   createdAt: number;
 };
 
-export default function GamePage() {
+function GameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const weaponId = searchParams.get('weapon');
@@ -240,5 +240,18 @@ export default function GamePage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Основной компонент страницы
+export default function GamePage() {
+  return (
+    <Suspense fallback={
+      <div className={styles.loading}>
+        <h2>Loading...</h2>
+      </div>
+    }>
+      <GameContent />
+    </Suspense>
   );
 }
