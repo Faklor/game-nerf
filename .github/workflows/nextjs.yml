@@ -38,7 +38,7 @@ jobs:
       - name: Build with Next.js
         run: npm run build
         env:
-          BASEURL: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_BASEURL: /${{ github.event.repository.name }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
